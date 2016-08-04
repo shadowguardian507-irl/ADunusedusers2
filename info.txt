@@ -1,0 +1,4 @@
+http://172.17.0.2/
+http://stackoverflow.com/questions/17157721/getting-a-docker-containers-ip-address-from-the-host
+https://hub.docker.com/_/debian/
+https://hub.docker.com/_/nginx/
