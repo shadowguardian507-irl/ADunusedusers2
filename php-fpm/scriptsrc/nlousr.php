@@ -150,7 +150,41 @@ function dedupeunusedusersfromalldcs($ldaplinks,$ldapconf)
 
 
 }
-
+function useraccountcontroltotext($useraccountcontrolvalue)
+{
+  switch ($useraccountcontrolvalue) {
+    case 512:
+        $useraccountcontrolintp="Enabled";
+        break;
+    case 514:
+        $useraccountcontrolintp="Disabled";
+        break;
+    case 66048:
+        $useraccountcontrolintp="Enabled (".$useraccountcontrolvalue.")";
+        break;
+    case 66050:
+        $useraccountcontrolintp="Disabled (".$useraccountcontrolvalue.")";
+        break;
+    case 544:
+        $useraccountcontrolintp="Change Password";
+        break;
+    case 262656:
+        $useraccountcontrolintp="Requires Smart Card";
+        break;
+    case 1:
+        $useraccountcontrolintp="Locked Disabled";
+        break;
+    case 8388608:
+	      $useraccountcontrolintp="Password Expired";
+        break;
+    case 66080:
+        $useraccountcontrolintp="Enabled - No password expiry - Password not required (".$useraccountcontrolvalue.")";
+        break;
+    default:
+        $useraccountcontrolintp="Unknown (".$useraccountcontrolvalue.")";
+  }
+  return $useraccountcontrolintp;
+}
 
 ?>
 
@@ -216,6 +250,7 @@ htmldebugprint_r($allunusedusersflagedonallDCs,$debugenable);
 ?>
 <table style="width:100%">
   <tr>
+    <th style="font-weight: bold;">Account Status</th>
     <th style="font-weight: bold;">User Name</th>
     <th style="font-weight: bold;">Display Name</th>
     <th style="font-weight: bold;">When Created (year-month-day time)</th>
@@ -233,9 +268,10 @@ htmldebugprint_r($allunusedusersflagedonallDCs,$debugenable);
 
 foreach ($allunusedusersflagedonallDCs as $username)
   {
+      $userinfo = $adldap[0]->user()->info($username, array("displayname","lastLogonTimestamp","lastLogon","whenCreated","userAccountControl"));
       print "<tr>";
+      print "<th>". useraccountcontroltotext($userinfo[0]["useraccountcontrol"][0]) ."</th>";
       print "<th>". $username ."</th>";
-      $userinfo = $adldap[0]->user()->info($username, array("displayname","lastLogonTimestamp","lastLogon","whenCreated"));
       print "<th>". $userinfo[0]["displayname"][0] ."</th>";
       $wcsrc = $userinfo[0]["whencreated"][0];
       $wcconvd = substr($wcsrc,0,4)."-".substr($wcsrc,4,2)."-".substr($wcsrc,6,2)." ".substr($wcsrc,8,2).":".substr($wcsrc,10,2);
