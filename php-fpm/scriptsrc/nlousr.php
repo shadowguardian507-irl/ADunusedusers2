@@ -204,22 +204,31 @@ function useraccountcontroltotext($useraccountcontrolvalue)
   });
   </script>
 <?php
-if (!file_exists ( "./config.d/active/ldap.conf.php"))
+
+foreach (glob("./components/php/*.enabled.comp.php") as $enabledcompname)
 {
-  echo "ldap config file mising please check that ./config.d/active/ldap.conf.php exists exists template can be found in ./config.d/template/ldap.conf.php";
-  die;
-}
-if (!file_exists ( "./config.d/active/theme.conf.php"))
-{
-  echo "theme config file mising please check that ./config.d/active/theme.conf.php exists template can be found in ./config.d/template/theme.conf.php ";
-  die;
+    include $enabledcompname;
 }
 
-// config module loader
-foreach (glob("./config.d/active/*.conf.php") as $conffilename)
+if (!checkldapconfigexists())
+  {
+    echo "ldap config file missing please check that ./config.d/active/ldap.conf.php exists exists template can be found in ./config.d/template/ldap.conf.php";
+    die;
+  }
+
+if(!checkthemeconfigexists())
+  {
+    echo "theme config file mising please check that ./config.d/active/theme.conf.php exists template can be found in ./config.d/template/theme.conf.php";
+    die;
+  }
+
+foreach (glob("./config.d/active/*.conf.php") as $configfilename)
 {
-    include $conffilename;
+    include $configfilename;
 }
+
+
+
 ?>
 
 </head>
