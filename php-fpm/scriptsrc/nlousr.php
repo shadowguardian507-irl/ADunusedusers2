@@ -194,15 +194,6 @@ function useraccountcontroltotext($useraccountcontrolvalue)
   <title>AD never logged in accounts</title>
   <meta charset="UTF-8">
   <meta name="description" content="list of users who have never logged in to AD but have accounts">
-  <script>
-  $(window).on('beforeunload', function() {
-  $(window).on('unload', function() {
-    window.location.href = 'index.html';
-  });
-
-  return 'Not an empty string';
-  });
-  </script>
 <?php
 
 foreach (glob("./components/php/*.enabled.comp.php") as $enabledcompname)
