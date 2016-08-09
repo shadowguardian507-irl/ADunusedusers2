@@ -58,144 +58,7 @@ This software is provided WITHOUT any SUPPORT or WARRANTY but bug reports and fe
 $debugenable = false;
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ?>
-
 <?php
-function htmldebugprint(string $stringtoprint, bool $printenable)
-{
-  if($printenable)
-  {
-    print $stringtoprint;
-  }
-}
-
-function htmldebugprint_r(array $arraytoprint, bool $printenable)
-{
-  if($printenable)
-  {
-    print "<pre>";
-    print_r($arraytoprint);
-    print "</pre>";
-  }
-}
-function mslogintimestamptodatecellformated($mstimestamp)
-{
-  $mstimestampsec   = (int)($mstimestamp / 10000000); // divide by 10 000 000 to get seconds
-  $unixTimestamp = ($mstimestampsec - 11644473600); // 1.1.1600 -> 1.1.1970 difference in seconds
-
-  if ( (isset($mstimestamp)) && ($mstimestamp != "") && ($mstimestamp != 0) ){
-      print "<th>". date('Y-m-d h:i:s A', $unixTimestamp ) ." </th>";
-    }
-  else
-    {
-      print "<th> never logged in </th>";
-    }
-}
-
-function closedcconnections($ADldaplinkarray)
-{
-  foreach ($ADldaplinkarray as $DClink) {
-        $DClink->close();
-      }
-}
-
-function connecttodcs($dcsarry,$ldapconf)
-{
-  $bdn = $ldapconf['basedn'];
-  $acctsif = $ldapconf['accountsuffix'];
-  $lun = $ldapconf['linkaccountname'];
-  $lup = $ldapconf['linkaccountpassword'];
-  $rpg = $ldapconf['realprimarygroup'];
-  $rg = $ldapconf['recursivegroups'];
-
-  $dcid = 0;
-  foreach ($dcsarry as $dc) {
-
-    $dclinkarry = array($dc);
-    $LdapConOptArry = array('base_dn'=>$bdn, 'domain_controllers'=>$dclinkarry, 'account_suffix'=>$acctsif, 'admin_username'=>$lun, 'admin_password'=>$lup, 'real_primarygroup'=>$rpg, 'recursive_groups'=>$rg );
-
-    $adldapcons[$dcid] = new adLDAP($LdapConOptArry);
-    try {
-        $adldapcons[$dcid]->connect();
-    }
-    catch (adLDAPException $e) {
-        echo $e; exit();
-    }
-    $dcid = $dcid + 1;
-  }
-
-  return $adldapcons;
-}
-
-function dedupeunusedusersfromalldcs($ldaplinks,$ldapconf)
-{
-  foreach ($ldaplinks as $DCadldap) {
-    $sr = ldap_search($DCadldap->getLdapConnection(), $ldapconf['basedn'] , '(&(!(lastlogon=*))(objectClass=user)(!(objectClass=computer)))', array('objectclass', 'distinguishedname', 'samaccountname'));
-    $userentries = @ldap_get_entries($DCadldap->getLdapConnection(), $sr);
-
-    foreach ($userentries as $auserobject) {
-        if( $auserobject['samaccountname'][0] != '' )
-        {
-          $usernamesarry[$namearrayid][] = $auserobject['samaccountname'][0];
-        }
-    }
-    $namearrayid = $namearrayid + 1;
-  }
-
-  $useroutputarry = array();
-  foreach ($usernamesarry as $userarry) {
-    $useroutputarry = array_unique(array_merge($useroutputarry,$userarry), SORT_REGULAR);
-  }
-
-  return $useroutputarry;
-
-
-}
-function useraccountcontroltotext($useraccountcontrolvalue)
-{
-  switch ($useraccountcontrolvalue) {
-    case 512:
-        $useraccountcontrolintp="Enabled";
-        break;
-    case 514:
-        $useraccountcontrolintp="Disabled";
-        break;
-    case 66048:
-        $useraccountcontrolintp="Enabled (".$useraccountcontrolvalue.")";
-        break;
-    case 66050:
-        $useraccountcontrolintp="Disabled (".$useraccountcontrolvalue.")";
-        break;
-    case 544:
-        $useraccountcontrolintp="Change Password";
-        break;
-    case 262656:
-        $useraccountcontrolintp="Requires Smart Card";
-        break;
-    case 1:
-        $useraccountcontrolintp="Locked Disabled";
-        break;
-    case 8388608:
-	      $useraccountcontrolintp="Password Expired";
-        break;
-    case 66080:
-        $useraccountcontrolintp="Enabled - No password expiry - Password not required (".$useraccountcontrolvalue.")";
-        break;
-    default:
-        $useraccountcontrolintp="Unknown (".$useraccountcontrolvalue.")";
-  }
-  return $useraccountcontrolintp;
-}
-
-?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-  <title>AD never logged in accounts</title>
-  <meta charset="UTF-8">
-  <meta name="description" content="list of users who have never logged in to AD but have accounts">
-<?php
-
 foreach (glob("./components/php/*.enabled.comp.php") as $enabledcompname)
 {
     include $enabledcompname;
@@ -217,16 +80,18 @@ foreach (glob("./config.d/active/*.conf.php") as $configfilename)
 {
     include $configfilename;
 }
-
-
-
+require_once(dirname(__FILE__) . '/adLDAP-4.0.4/adLDAP.php');
 ?>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <title>AD never logged in accounts</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="list of users who have never logged in to AD but have accounts">
 </head>
 <body>
   <h1>AD never logged in accounts</h1>
 <?php
-require_once(dirname(__FILE__) . '/adLDAP-4.0.4/adLDAP.php');
 
 $bdn = $ldapconf['basedn'];
 $acctsif = $ldapconf['accountsuffix'];
@@ -237,17 +102,12 @@ $rg = $ldapconf['recursivegroups'];
 $dcs = $ldapconf['dcarray'];
 
 $adldap = connecttodcs($dcs,$ldapconf);
-
 htmldebugprint_r($adldap,$debugenable);
-
 htmldebugprint("<hr>",$debugenable);
-
 $allunusedusersflagedonallDCs = dedupeunusedusersfromalldcs($adldap, $ldapconf);
-
 htmldebugprint_r($allunusedusersflagedonallDCs,$debugenable);
-
-
 ?>
+
 <table style="width:100%">
   <tr>
     <th style="font-weight: bold;">Account Status</th>

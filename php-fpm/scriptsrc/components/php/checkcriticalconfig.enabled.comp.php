@@ -1,4 +1,9 @@
 <?php
+/*.
+    require_module 'standard';
+.*/
+?>
+<?php
 
 function checkldapconfigexists(){
   if (!file_exists ( "./config.d/active/ldap.conf.php"))
