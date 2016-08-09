@@ -26,5 +26,51 @@ tr:nth-child(odd) { background-color: white;}
   box-shadow: 0 .3em .3em rgba(0, 0, 0, 0.4), inset 0 .1em 0
 }
 </style>
-
+<style>
+div#banner-bottom {
+       position: fixed;
+       bottom: 0;
+       left: 0;
+       right: 0;
+       height: 1.5em;
+       background-color: #000000;
+     }
+div#banner-content-bottom{
+       height: 1em;
+       margin: 0 auto ;
+       padding: 0em;
+       border: 0.1em solid #000;
+}
+div#banner-content-bottom-right {
+       float: right;
+       text-align:right;
+       color:white;
+       font-size:.7em;
+     }
+div#banner-content-bottom-left {
+       float: left;
+       text-align:left;
+       color:white;
+       font-size:.7em;
+     }
+div#banner-content-bottom-right a
+     {
+       color:white;
+     }
+</style>
+<style>
+body{
+background: #bcbcbc; /* Old browsers */
+background: -moz-linear-gradient(top,  #bcbcbc 1%, #e8e8e8 37%, #ffffff 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#bcbcbc), color-stop(37%,#e8e8e8), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #bcbcbc 1%,#e8e8e8 37%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #bcbcbc 1%,#e8e8e8 37%,#ffffff 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #bcbcbc 1%,#e8e8e8 37%,#ffffff 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #bcbcbc 1%,#e8e8e8 37%,#ffffff 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bcbcbc', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+font-family:"Arial";
+background-attachment:fixed;
+padding-bottom:2em;
+}
+</style>
 <?php ?>
