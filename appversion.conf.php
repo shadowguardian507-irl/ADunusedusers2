@@ -1,1 +1,1 @@
-<?php $versiondata["version"] = "app-V2.0.0" ?>
+<?php $versiondata["version"] = "R2 (app-V2.0.0)" ?>
