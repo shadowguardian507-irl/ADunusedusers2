@@ -1,6 +1,8 @@
 AD unused users 2
 =============
 
+[![Join the chat at https://gitter.im/Etheria-Software/ADunusedusers2](https://badges.gitter.im/Etheria-Software/ADunusedusers2.svg)](https://gitter.im/Etheria-Software/ADunusedusers2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Dependencies
 
 	* [docker](https://www.docker.com/).
