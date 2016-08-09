@@ -5,8 +5,6 @@ AD unused users 2
 
 ## Dependencies
 
-	* [docker](https://www.docker.com/).
-	* [php5 or higher](http://php.net/).
 
 ## How to use
 
