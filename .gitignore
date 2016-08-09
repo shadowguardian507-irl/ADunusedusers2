@@ -1,2 +1,4 @@
  
 /php-fpm/scriptsrc/config.d/active/*.conf.php
+/php-fpm/version.conf.php
+/php-fpm/appversion.conf.php

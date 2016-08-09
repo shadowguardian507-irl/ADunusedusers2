@@ -26,5 +26,37 @@ tr:nth-child(odd) { background-color: white;}
   box-shadow: 0 .3em .3em rgba(0, 0, 0, 0.4), inset 0 .1em 0
 }
 </style>
+<style>
+div#banner-bottom {
+       position: fixed;
+       bottom: 0;
+       left: 0;
+       right: 0;
+       height: 1.5em;
+       background-color: #000000;
+     }
+div#banner-content-bottom{
+       height: 1em;
+       margin: 0 auto ;
+       padding: 0em;
+       border: 0.1em solid #000;
+}
+div#banner-content-bottom-right {
+       float: right;
+       text-align:right;
+       color:white;
+       font-size:.7em;
+     }
+div#banner-content-bottom-left {
+       float: left;
+       text-align:left;
+       color:white;
+       font-size:.7em;
+     }
+div#banner-content-bottom-right a
+     {
+       color:white;
+     }
+</style>
 
 <?php ?>

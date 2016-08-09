@@ -9,6 +9,12 @@ $debugenable = false;
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ?>
 <?php
+foreach (glob("./config.d/active/*.conf.php") as $configfilename)
+{
+    include $configfilename;
+}
+require_once(dirname(__FILE__) . '/adLDAP-4.0.4/adLDAP.php');
+
 foreach (glob("./components/php/*.enabled.comp.php") as $enabledcompname)
 {
     include $enabledcompname;
@@ -26,11 +32,7 @@ if(!checkthemeconfigexists())
     die;
   }
 
-foreach (glob("./config.d/active/*.conf.php") as $configfilename)
-{
-    include $configfilename;
-}
-require_once(dirname(__FILE__) . '/adLDAP-4.0.4/adLDAP.php');
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -41,8 +43,8 @@ require_once(dirname(__FILE__) . '/adLDAP-4.0.4/adLDAP.php');
 </head>
 <body>
   <h1>AD never logged in accounts</h1>
-<?php
 
+<?php
 $bdn = $ldapconf['basedn'];
 $acctsif = $ldapconf['accountsuffix'];
 $lun = $ldapconf['linkaccountname'];
