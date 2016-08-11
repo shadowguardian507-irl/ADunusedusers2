@@ -80,7 +80,7 @@ htmldebugprint_r($allunusedusersflagedonallDCs,$debugenable);
 
 foreach ($allunusedusersflagedonallDCs as $username)
   {
-      $userinfo = $adldap[0]->user()->info($username, array("displayname","lastLogonTimestamp","lastLogon","whenCreated","userAccountControl"));
+      $userinfo = $adldap[0]->user()->info($username, array("displayname","lastLogonTimestamp","lastLogon","whenCreated","userAccountControl","description"));
       print "<tr>";
       print "<th>". useraccountcontroltotext($userinfo[0]["useraccountcontrol"][0]) ."</th>";
       print "<th>". $username ."</th>";
@@ -94,6 +94,9 @@ foreach ($allunusedusersflagedonallDCs as $username)
         }
       mslogintimestamptodatecellformated($userinfo[0]["lastlogontimestamp"][0]);
       print "</tr>";
+      if((isset($_GET["enabledesc"]))&&($_GET["enabledesc"]==="true")){
+        renderoptionalrow($userinfo[0]["description"][0],true);
+      }
   }
 
 ?>
