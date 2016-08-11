@@ -3,9 +3,30 @@ use PHPUnit\Framework\TestCase;
 
 class TestCritConfigCheck extends TestCase
 {
-    public function testFailure()
+    public function testComponentFilePresent()
     {
-       $this-> assertFileExists(dirname(__FILE__) .'/../../../scriptsrc/components/php/checkcriticalconfig.enabled.comp.php');
+       $this->assertFileExists(dirname(__FILE__) .'/../../../scriptsrc/components/php/checkcriticalconfig.enabled.comp.php');
+    }
+
+    public function testComponentFileisPHPFile()
+    {
+        $isPHPFile=true;
+
+        if( strpos(file_get_contents(dirname(__FILE__) .'/../../../scriptsrc/components/php/checkcriticalconfig.enabled.comp.php'),"<?php") !== false) {
+        }
+        else
+        {
+            $isPHPFile=false;
+        }
+        if( strpos(file_get_contents(dirname(__FILE__) .'/../../../scriptsrc/components/php/checkcriticalconfig.enabled.comp.php'),"?>") !== false) {
+        }
+        else
+        {
+            $isPHPFile=false;
+        }
+
+        $this->assertTrue( $isPHPFile,'component File does not have php tags');
+
     }
 }
 ?>
