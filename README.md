@@ -11,6 +11,7 @@ AD unused users 2
 ## How to use
 
     > clone this reposity to disk 
+    > please copy the template enviroment config to the active folder in /php-fpm/scriptsrc/config.d/ and fill in your enviroment details 
     > run command php configure.php in the root of the cloned reposity directory to configure the app contaners
     > follow the instructions provided by the configure script to initalise the docker contaners
 
